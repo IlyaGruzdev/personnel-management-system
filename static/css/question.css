@@ -1,0 +1,24 @@
+
+.ask_btn
+{
+  width: 100px;
+  height: 50px;
+  color:black;
+}
+:hover.ask_btn
+{
+ background-color: bisque;
+  
+}
+.answer_title
+{
+  margin-bottom: 30px;
+
+}
+.answer_text
+{
+  font-size: medium;
+  background-color: white;
+  padding-top: 15px;
+ 
+}

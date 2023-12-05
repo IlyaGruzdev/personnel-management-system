@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pure CSS Off-canves Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <style>
+      #menu {
+        display: block;
+        width: 300px;
+        min-height: 100%;
+        top: 0;
+        z-index: 9999;
+        position:fixed;
+    }
+    #menu.toggle {
+        top: 0;
+        left: 300px;
+        padding:10px;
+        position: absolute;
+    }
+    #toggle{
+        display: none;
+    }
+    #menu {
+        left: -300px; /* must be the same as the width of the menu */
+        -webkit-transition: left 1s;
+        transition: left 1s;
+    }
+    /* Showing the menu then the Checkbox is checked */
+    #toggle:checked + #menu {
+        left: 0;
+        -webkit-transition: left 1s; /* Safari 3.1 to 6.0 */
+        transition: left 1s;
+    }
+    #menu span {
+        display: block;
+        font-size: 22px;
+        margin: 20px 10px;
+    }
+    #menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    #menu ul li {
+        font-size:19px;
+        border-bottom: 1px solid #2c3e50;
+    }
+    #menu ul li a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color:#fff;
+    }
+    #menu ul ul li {
+        background-color: #2c3e50;
+    }
+    #menu ul li a:hover,
+    #menu ul ul li a {
+        padding: 10px 10px 10px 30px;
+    }
+    #menu ul ul li a:hover {
+        padding: 10px 10px 10px 60px;
+    }
+    #menu ul li a,
+    #menu ul li a:hover,
+    #menu ul ul li a,
+    #menu ul ul li a:hover {
+        -webkit-transition: padding 0.5s; /* Safari 3.1 to 6.0 */
+        transition: padding 0.5s;
+    }
+    input[id^="dropdown"],
+    ul[class^="dropdown"] {
+        display: none;
+    }
+    input[id^="dropdown"]:checked + ul[class^="dropdown"] {
+        height: auto;
+        display: block;
+    }
+      </style>
+</head>
+
+<body>
+  <nav class="menuContent">
+    
+    <!-- Menu Section title -->
+    <span>Navigation Links</span>
+    
+    <!-- First Menu -->
+    <ul>
+        <li><a href="#"><i class="fa fa-home"></i>  Home</a></li>
+        <li><a href="#"><i class="fa fa-picture-o"></i>  Portfolio</a></li>
+        <li><a href="#"><i class="fa fa-coffee"></i>  Blog</a></li>
+        <li><a href="#"><i class="fa fa-user"></i>  About</a></li>
+        <li><a href="#"><i class="fa fa-envelope-o"></i>  Contact</a></li>
+    </ul>
+</nav>
+
+  <input type="checkbox" name="menu" value="toggle" id="toggle">
+
+  <section id="menu">
+    
+    <!-- Lable for #showmenu to hide the menu/uncheck the checkbox -->
+    <label class="toggle" for="toggle"><i class="fa fa-2x fa-bars"></i></label>
+    
+    <!-- Menu content -->
+    <nav class="menuContent">bdbbdb</nav>
+    <li>
+      <!-- Second tier dropdown -->
+      <label for="dropdown-1" class="dropdown-1"><a>Blog</a></label>
+      <input type="checkbox" name="menu" id="dropdown-1">
+      <ul class="dropdown-1">
+          <!-- Dropdown links here -->
+          <li><a href="#"><i class="fa fa-code"></i>  Tutorials</a></li>
+          <li><a href="#"><i class="fa fa-eye"></i>  Inspiration</a></li>
+      </ul>
+  </li>
+  
+</section>
+</body>
+</html>
