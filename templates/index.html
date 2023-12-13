@@ -10,12 +10,17 @@
   <link rel="stylesheet" href="{% static 'css/base.css'%}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
 </head>
 <body>
 <header>
+  <div id="navbar_navbar_inverse">
  {%include "components/navbar.html"%}
+  </div>
   </header>
+  <div id='register_form' style="display: none;">
+    {% include 'register.html' %}
+    </div>
+   
   <div class="row">
     <div class="col-sm-1">
       <div class="icon-bar">
@@ -25,11 +30,8 @@
         <a href="#"><i class="fa fa-globe"></i></a>
         <a href="#"><i class="fa fa-trash"></i></a> 
       </div>
- 
-    
-   
     </div>
-  <div class="col-sm-10">
+  <div class="col-sm-11">
   <div class="container index_content">
     
     <div class="row">
@@ -40,48 +42,88 @@
         
        
           <h1>I am John Doe</h1>
-          <p>And I'm a Photographer</p>
+          <p>And I'm a Photographer
+          
+          </p>
 
         <div class="row">
 
        
         <div class="col-sm-4">
-          <div class="dropdown">
-
-            <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-            <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">HTML</a></li>
-              <li><a href="#">CSS</a></li>
-              <li><a href="#">JavaScript</a></li>
+          <div class="Mydropdown">
+          <div class="selector" id = "selectField">
+           
+              <img src="{%static 'img/person-raised-hand.svg'%}">
+              <div>
+                Dropdown
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square" viewBox="0 0 16 16">
+                <path d="M3.626 6.832A.5.5 0 0 1 4 6h8a.5.5 0 0 1 .374.832l-4 4.5a.5.5 0 0 1-.748 0l-4-4.5z"/>
+                <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+              </svg>
+            </div>
+           
+            <ul class="dropdown-content hide" id="dropdown-content_1">
+              <li class="dropdown-cont-item"><a href="#">HTML</a></li>
+              <li class="dropdown-cont-item"><a href="#">CSS</a></li>
+              <li class="dropdown-cont-item"><a href="#">JavaScript</a></li>
+              <li class="dropdown-cont-item"><a href="#">HTML</a></li>
+              <li class="dropdown-cont-item"><a href="#">CSS</a></li>
+              <li class="dropdown-cont-item"><a href="#">JavaScript</a></li>
             </ul>
           </div>
         </div>
         <div class="col-sm-4">
-          <div class="dropdown">
-
-            <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-            <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">HTML</a></li>
-              <li><a href="#">CSS</a></li>
-              <li><a href="#">JavaScript</a></li>
-            </ul>
+          <div class="Mydropdown">
+            <div class="selector" id = "selectField">
+             
+                <img src="{%static 'img/person-raised-hand.svg'%}">
+                <div>
+                  Dropdown
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square" viewBox="0 0 16 16">
+                  <path d="M3.626 6.832A.5.5 0 0 1 4 6h8a.5.5 0 0 1 .374.832l-4 4.5a.5.5 0 0 1-.748 0l-4-4.5z"/>
+                  <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+                </svg>
+              </div>
+             
+              <ul class="dropdown-content hide" id="dropdown-content_2">
+                <li class="dropdown-cont-item"><a href="#">HTML</a></li>
+                <li class="dropdown-cont-item"><a href="#">CSS</a></li>
+                <li class="dropdown-cont-item"><a href="#">JavaScript</a></li>
+                <li class="dropdown-cont-item"><a href="#">HTML</a></li>
+                <li class="dropdown-cont-item"><a href="#">CSS</a></li>
+                <li class="dropdown-cont-item"><a href="#">JavaScript</a></li>
+              </ul>
+            </div>
           </div>
           
-        </div>
         <div class="col-sm-4">
-          
-          <div class="dropdown">
-            <button class="btn btn-lg btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-            <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a href="#">HTML</a></li>
-              <li><a href="#">CSS</a></li>
-              <li><a href="#">JavaScript</a></li>
-            </ul>
+          <div class="Mydropdown">
+            <div class="selector">
+             
+                <img src="{%static 'img/person-raised-hand.svg'%}">
+                <div>
+                  Dropdown
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square" viewBox="0 0 16 16">
+                  <path d="M3.626 6.832A.5.5 0 0 1 4 6h8a.5.5 0 0 1 .374.832l-4 4.5a.5.5 0 0 1-.748 0l-4-4.5z"/>
+                  <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/>
+                </svg>
+              </div>
+             
+              <ul class="dropdown-content hide" id="dropdown-content_3">
+                <li class="dropdown-cont-item"><a href="#">HTML</a></li>
+                <li class="dropdown-cont-item"><a href="#">CSS</a></li>
+                <li class="dropdown-cont-item"><a href="#">JavaScript</a></li>
+                <li class="dropdown-cont-item"><a href="#">HTML</a></li>
+                <li class="dropdown-cont-item"><a href="#">CSS</a></li>
+                <li class="dropdown-cont-item"><a href="#">JavaScript</a></li>
+              </ul>
+            </div>
           </div>
           
+          </div>
         </div>
       </div>
     </div>
@@ -117,63 +159,9 @@
   </head>
  
 </body>
-<div class="container">
-  <section style="height:80px;"></section>
-  <div class="row" style="text-align:center;">
-  <h2>Bootstrap Dark Footer UI</h2>
-  </div>
-  <!----------- Footer ------------>
-  <footer class="footer-bs">
-  <div class="row">
-  <div class="col-md-3 footer-brand animated fadeInLeft">
-  <h2>Logo</h2>
-  <p>Suspendisse hendrerit tellus laoreet luctus pharetra. Aliquam porttitor vitae orci nec ultricies. Curabitur vehicula, libero eget faucibus faucibus, purus erat eleifend enim, porta pellentesque ex mi ut sem.</p>
-  <p>© 2014 BS3 UI Kit, All rights reserved</p>
-  </div>
-  <div class="col-md-4 footer-nav animated fadeInUp">
-  <h4>Menu —</h4>
-  <div class="col-md-6">
-  <ul class="pages">
-  <li><a href="#">Travel</a></li>
-  <li><a href="#">Nature</a></li>
-  <li><a href="#">Explores</a></li>
-  <li><a href="#">Science</a></li>
-  <li><a href="#">Advice</a></li>
-  </ul>
-  </div>
-  <div class="col-md-6">
-  <ul class="list">
-  <li><a href="#">About Us</a></li>
-  <li><a href="#">Contacts</a></li>
-  <li><a href="#">Terms & Condition</a></li>
-  <li><a href="#">Privacy Policy</a></li>
-  </ul>
-  </div>
-  </div>
-  <div class="col-md-2 footer-social animated fadeInDown">
-  <h4>Follow Us</h4>
-  <ul>
-  <li><a href="#">Facebook</a></li>
-  <li><a href="#">Twitter</a></li>
-  <li><a href="#">Instagram</a></li>
-  <li><a href="#">RSS</a></li>
-  </ul>
-  </div>
-  <div class="col-md-3 footer-ns animated fadeInRight">
-  <h4>Newsletter</h4>
-  <p>A rover wearing a fuzzy suit doesn’t alarm the real penguins</p>
-  <p>
-  <div class="input-group">
-  <input type="text" class="form-control" placeholder="Search for...">
-  <span class="input-group-btn">
-  <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-envelope"></span></button>
-  </span>
-  </div><!-- /input-group -->
-  </p>
-  </div>
-  </div>
-  </footer>
-  <section style="text-align:center; margin:10px auto;"><p>Designed by <a href="/">Gruzdev Ilya</a></p></section>
+{% include 'components/footer.html'%}
 
-</div>
+<script src="{% static 'js/index.js'%}">
+  
+</script>
 </html>
