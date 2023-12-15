@@ -196,3 +196,10 @@ body {
 {
   background-color: white;
 }
+
+.nav-avatar
+{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;  
+}

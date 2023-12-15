@@ -14,6 +14,7 @@ def get_upload_path(instance, filename):
 class CustomUser(AbstractUser):
   is_personal = models.BooleanField(default = False)
   is_manager = models.BooleanField(default = False)
+  avatar=models.ImageField(null=True, blank=True, upload_to=get_upload_path, default='no_avatar.jpg')
   def clean(self):
     if(self.is_personal and self.is_manager):
       raise ValidationError("User cannot be both Manager and Personal")
@@ -35,7 +36,6 @@ class Personal(models.Model):
   raiting = models.SmallIntegerField(MaxValueValidator(100), default=60)
   projects = models.ManyToManyField(Project, related_name='personal')
   user = models.OneToOneField(CustomUser, related_name='personal', on_delete=models.CASCADE,primary_key=True)
-  avatar=models.ImageField(null=True, blank=True, upload_to=get_upload_path, default='no_avatar.jpg')
 
 class Manager(models.Model):
   projects = models.ManyToManyField(Project, related_name='managers')

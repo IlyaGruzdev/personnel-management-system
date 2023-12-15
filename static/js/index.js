@@ -38,5 +38,20 @@
     document.querySelector("header").style.display="block";
     document.getElementById("register_form").style.display = "block";
     document.body.style="background-color: black";
-
+    var savedUsername = localStorage.getItem('username');
+    var savedEmail = localStorage.getItem('email');
+    var savedPassword = localStorage.getItem('password');
+    var savedConfirmPassword = localStorage.getItem('confirm_password');
+    var savedLogin = localStorage.getItem('login');
+    var savedLogPassword = localStorage.getItem('logpassword');
+    var remember = localStorage.getItem('remember');
+  
+  // Устанавливаем значения в поля форм
+  signedUpForm.querySelector('#id_username').value = savedUsername||"";
+  signedUpForm.querySelector('#id_email').value = savedEmail||"";
+  signedUpForm.querySelector('#id_password').value = savedPassword||"";
+  signedUpForm.querySelector('#id_confirm_password').value = savedConfirmPassword||"";
+  signedInForm.querySelector('#id_login').value = savedLogin||"";
+  signedInForm.querySelector('#id_password').value = savedLogPassword||"";
+  signedInForm.querySelector('#checkbox').checked = remember||false;
 }

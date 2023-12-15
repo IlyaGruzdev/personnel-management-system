@@ -1,43 +1,51 @@
 {% load static %}
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <link href="{%static 'css/register.css'%}" rel="stylesheet" type = 'text/css'>
 
 <div class="container">
   <div class="frame">
     <div class="nav">
       <ul class="links">
-        <li class="signin-active"><a class="btn">Sign in</a></li>
-        <li class="signup-inactive"><a class="btn">Sign up </a></li>
+        <li class="signedin-active"><a class="btn">Sign in</a></li>
+        <li class="signedup-inactive"><a class="btn">Sign up </a></li>
         <div class="backspace">
           <img src="{% static 'img/backspace-reverse-fill.svg'%}", width="30" height="30"  onClick="history.go()">        
         </div>
       </ul>
      
     </div>
-    <div ng-app ng-init="checked = false">
-				        <form class="form-signin" action="{% url 'home'%}" method="POST" name="form">
+    <div ng-app ng-init="checked = false" >
+				        <form  action="{% url 'home'%}" method="POST" name="form" id="myform-signin" class="form-signedin">
+                  <ul class="logmessages alert alert-danger" style="display:none;">
+                     
+                  </ul>
                   {% csrf_token %}
+                  {{loginform.type}}
                   <label>Username</label>
-                    
                     {{loginform.login}}
                    <label for="password">Password</label>
                    {{loginform.password}}
                    {{loginform.check}}
                    <label for="checkbox" ><span class="ui"></span>Keep me signed in</label>
-                   <div class="btn-animate">
-                     <a class="btn-signin" type="submit">Sign in</a>
-                   </div>
+                  
+                    <input type="submit" value="Sign In" class="btn-signedup"/>
+
                  
 				        </form>
                 
-				        <form method="POST" action="{% url 'home' %}"  class="form-signup" name="form">
-                  {{registerform}}  
-                {%csrf_token%}
+                  <form method="POST" action="{% url 'home' %}" id="myform-signup" class="form-signedup">
+                    <ul class="regmessages alert alert-danger" style="display:none;">
+                     
+                    </ul>
+                    {%csrf_token%}
+                    {{ registerform.as_p}}
+                   
+            <input type="submit" value="Sign Up" class="btn-signedup"/>
+                  </form> 
                 
-          
-          <input class="btn-signup" type="submit" value="Submit"/>Sign Up
-
-				        </form> 
+               
                
               
 
@@ -54,19 +62,11 @@
              
       </div>
       
-      <div class="forgot">
-        <a href="#">Forgot your password?</a>
-      </div>
-      
-      <div>
-        <div class="cover-photo"></div>
-        <div class="profile-photo"></div>
-        <h1 class="welcome">Welcome, Chris</h1>
-        <a class="btn-goback" value="Refresh" onClick="history.go()">Go back</a>
-      </div>
+     
+     
   </div>
     
-  <a id="refresh" value="Refresh" onClick="history.go()">
+  <a id="refresh" value="Refresh">
     <svg class="refreshicon"   version="1.1" id="Capa_1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
          width="25px" height="25px" viewBox="0 0 322.447 322.447" style="enable-background:new 0 0 322.447 322.447;"
          xml:space="preserve">
