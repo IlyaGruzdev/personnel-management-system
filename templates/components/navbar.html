@@ -23,7 +23,7 @@
     </ul>
     {%if user %}
     <ul class="nav navbar-nav navbar-right">
-      <li ><a href="" class="nav-link"> <img src="{{user.avatar.url}}" class="nav-avatar"></a></li>
+      <li ><a href="{% url 'profile' user.username %}" class="nav-link"> <img src="{{user.avatar.url}}" class="nav-avatar"></a></li>
       <li ><a href="" class="nav-link">{{user.username}}</a></li>
       <li ><a href="#" onclick="showRegisterForm()"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
       <li>

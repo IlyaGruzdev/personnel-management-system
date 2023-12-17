@@ -1,0 +1,33 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/manager/project-slider.css'%}">
+<header class="slider-container">
+  <h1>Responsive Image Slider/Carousel</h1>
+</header>
+<section class="slider-container">
+  <div class="slider">
+    <div class="slide">
+      {% include 'components/manager-project.html'%}
+    </div>
+
+    <div class="slide">
+      {% include 'components/manager-project.html'%}
+    </div>
+
+    <div class="slide">
+      {% include 'components/manager-project.html'%}
+    </div>
+
+  </div>
+
+  <div class="slider-nav">
+    <span class="arrow-prev">
+      <i class="fa fa-chevron-left"></i></span>
+
+    <ul class="slider-dots"></ul>
+
+    <span class="arrow-next">
+      <i class="fa fa-chevron-right"></i></span>
+  </div>
+</section>
+
+<script src="{% static 'js/project-slider.js'%}"></script>

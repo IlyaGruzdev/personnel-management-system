@@ -32,10 +32,6 @@ class Project(models.Model):
   photo=models.ImageField(null=True, blank=True, upload_to=get_upload_path, default='no_avatar.jpg')
   public_date = models.DateField(auto_now_add=True)
 
-class Personal(models.Model):
-  raiting = models.SmallIntegerField(MaxValueValidator(100), default=60)
-  projects = models.ManyToManyField(Project, related_name='personal')
-  user = models.OneToOneField(CustomUser, related_name='personal', on_delete=models.CASCADE,primary_key=True)
 
 class Manager(models.Model):
   projects = models.ManyToManyField(Project, related_name='managers')

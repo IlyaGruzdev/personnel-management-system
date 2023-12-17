@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sitemaps import Sitemap
 from django.http import HttpRequest
 from django.http import JsonResponse
@@ -70,8 +70,9 @@ def log_out(request):
     logout(request)
     return redirect('home')
     
-def register(request):
-  return render(request, 'p.html')
+def profile(request, username):
+  user = get_object_or_404(CustomUser, username=username)
+  return render(request, 'manager/profile.html', context={'user': user})
 
 
 
