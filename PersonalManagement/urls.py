@@ -19,6 +19,8 @@ from django.urls import path, include
 from Manager import views
 from django.contrib import auth
 urlpatterns = [
+    path('', views.index, name='home'),
     path('admin/', admin.site.urls),
-    path('', include('Manager.urls'))
+    path('manager/', include('Manager.urls')),
+    path('personal/', include('Personal.urls'))
 ]

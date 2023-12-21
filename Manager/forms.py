@@ -1,4 +1,7 @@
 from django import forms
+from django.forms import ModelForm, Textarea
+from django.contrib.admin.widgets import FilteredSelectMultiple
+from django import *
 from .models import *
 
 class LoginForm(forms.Form):
@@ -21,3 +24,21 @@ class RegisterForm(forms.Form):
         if password and confirm_password and password != confirm_password:
             raise forms.ValidationError("Passwords do not match")
         return cleaned_data
+    
+class ProjectForm(forms.ModelForm):
+    event = forms.ChoiceField(choices=TYPES_OF_EVENTS)
+    personal_list=forms.MultipleChoiceField(choices = TYPES_OF_PERSONAL, widget=forms.SelectMultiple(attrs={'size': '5'}))
+    class Meta:
+        model = Project
+        fields = ['name', 'brief', 'photo', 'event', 'start_date', 'duration', 'personal_list']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'field', 'placeholder': 'Input project name'}),
+            'brief': forms.Textarea(attrs={'class': 'field', 'rows': 7, 'cols': 20, 'placeholder': 'Input brief'}),
+            'photo': forms.FileInput(attrs={'class': 'field', 'placeholder': 'Change project photo'}),
+            'start_date': forms.DateInput(attrs={'class': 'field', 'placeholder': 'Input start project date', 'type': 'date'}),
+            'duration': forms.NumberInput(attrs={'class': 'field', 'placeholder': 'Input project duration in hours', 'type': 'number'}),
+        }
+    def __init__(self, *args, **kwargs):
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        self.fields['photo'].widget.attrs['enctype'] = 'multipart/form-data'
+

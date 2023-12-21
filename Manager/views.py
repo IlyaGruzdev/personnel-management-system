@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sitemaps import Sitemap
 from django.http import HttpRequest
 from django.http import JsonResponse
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ProjectForm
 from .models import *
 from django.contrib.auth import logout
 from django.core.exceptions import ValidationError
 from django.contrib import messages, sessions
+from django.db import transaction
+from datetime import datetime
 
 def index(request):
     print(request.POST)
@@ -43,6 +45,13 @@ def index(request):
                             request.session.set_expiry(60)
                         else:
                             request.session['user']=user.username
+                        if(user.is_manager):
+                            try:
+                                manager=user.manager 
+                            except:
+                                manager=Manager.objects.create(user=user)
+                                manager.save()
+                                print("created manager")
                         return JsonResponse({'message': 'data was saved'})
                     else:
                         return JsonResponse({'error': f'password {password} does not confirm'}, status = 400)
@@ -56,14 +65,18 @@ def index(request):
 
 
     else:
-        
+        context={}
         if('user' in request.session):
             user = CustomUser.objects.get(username=request.session['user']) 
         else:
             user=None
+        if user:
+            user_url = user.get_absolute_url()
+        else:
+            user_url=None
         registerForm = RegisterForm()             
         loginForm = LoginForm()
-        context = {'loginform': loginForm, 'registerform': registerForm, 'user': user}
+        context = {'loginform': loginForm, 'registerform': registerForm, 'user': user, 'user_url': user_url}
         return render(request, 'index.html', context=context)
 
 def log_out(request):
@@ -71,8 +84,47 @@ def log_out(request):
     return redirect('home')
     
 def profile(request, username):
-  user = get_object_or_404(CustomUser, username=username)
-  return render(request, 'manager/profile.html', context={'user': user})
+    user = get_object_or_404(CustomUser, username=username)
+    projectForm = ProjectForm()
+    user_url = user.get_absolute_url()
+    projects = user.manager.projects.all()
+    return render(request, 'manager/profile.html', context={'user': user, 'projectform': projectForm, 'user_url': user_url, 'projects': projects})
 
+def PostCreating(request):
+    if(request.session):
+        user = CustomUser.objects.get(username=request.session['user'])
+        if request.method == 'POST':
+            form = ProjectForm(request.POST, request.FILES)
+            personal_list = request.POST.getlist('personal_list')  # Замените 'excluded_field_name' на имя поля, которое вы хотите исключить
+            print(personal_list)
+            if 'personal_list' in form.fields:
+                del form.fields['personal_list']
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                print(cleaned_data)
+                if 'personal_list' in cleaned_data:
+                    del cleaned_data['personal_list']
+                project=Project(**cleaned_data)   
+                personalArr = []
+                for item in personal_list:
+                    item = item.strip()
+                    try:
+                        list_item =PersonalList(price = cleaned_data['duration']*personal_price[item], count=20, category = item)
+                        personalArr.append(list_item)
+                    except Exception as e:
+                        return JsonResponse({'error': str(e)}, status=400)
+                
+                try:
+                    with transaction.atomic():
+                        project.save()
+                        user.manager.projects.add(project)
+                        for item in personalArr:
+                            item.save() 
+                            project.personal_list.add(item)  # Добавляем personalArr к проекту
+                except Exception as e:
+                    return JsonResponse({'error': str(e)}, status=400)
+            else:
+                return JsonResponse({'error': form.errors}, status=400)
+    return JsonResponse({'success': 'successifuly created'})
 
 

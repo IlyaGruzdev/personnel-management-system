@@ -1,0 +1,162 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/manager/projectForm.css'%}">
+<style>
+  .changedField {
+    background-color: gray;
+  }
+  .errors {
+    background-color: firebrick;
+    width: 100%;
+  }
+  #error-list {
+    color:black;
+  }
+  #success-list {
+    background-color: green;
+    color: black;
+  }
+  ul, li {
+    list-style: none;
+  }
+</style>
+<div class="form-container" id="creating_form" style="width:50%">
+  <div class="errors">
+    <ul id="error-list">
+
+    </ul>
+  </div>
+  <ul id="success-list">
+    
+  </ul>
+  <form action="{% url 'post_creating'%}" method = "POST" id="submit-form" >
+   
+    {% csrf_token %}
+    <ul class="flex-outer">
+      <li>
+        <label for="first-name">Project Name</label>
+        {{projectform.name}}
+      </li>
+      <li>
+        <label for="last-name">Brief</label>
+        {{projectform.brief}}
+      </li> 
+      <li>
+        <label for="event-type">Event</label>
+        <div class="field">
+        {{projectform.event}}
+      </div>
+      </li>
+      <li>
+        <label for="date">Date</label>
+        {{projectform.start_date}}
+      </li>
+      
+      <li>
+        <label for="duration">Duration</label>
+        {{projectform.duration}}
+      </li>
+      <li>
+        <label for="photo">Photo</label>
+        {{projectform.photo}}
+      </li>
+      <li>
+        <label for="date">Personal</label>
+        <div id="personal_list_form">
+          <select name="personal_list" id="id_personal_list"  style="overflow-y: auto;" multiple>
+            {% for value, text in projectform.fields.personal_list.choices %}
+              <option class="field" value="{{ value }}">{{ text }} </option>
+                          
+            {% endfor %}
+          </select>
+        </div>
+       
+      </li>
+      <li>
+        <button type="submit">Submit</button>
+      </li>
+    </ul>
+  
+      </form>
+  <div style="position:absolute;right:0;top:0;cursor:pointer;">
+  <img src="{% static 'img/manager/X.png'%}" height="50px" width="50px" id="closebutton">
+  </div>
+</div>
+{% block JavaScript%}
+<script>
+  var closeButton = document.getElementById('closebutton').onclick = function(){
+  document.getElementById('creating_form').style.visibility="hidden";
+}
+var addBtn = document.getElementById('add-btn').onclick = function(){
+  document.getElementById('creating_form').style.visibility="visible";
+  document.getElementById('success-list').innerHTML = '';
+  document.getElementById('error-list').innerHTML = '';
+}
+var selectSet = new Set(); // Переменная должна быть объявлена глобально, чтобы сохранить состояние множества между кликами
+
+document.getElementById("id_personal_list").addEventListener("click", function(event) {
+  const clickField = event.target;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if (clickField.classList.contains("changedField")) {
+    clickField.classList.remove("changedField");
+    selectSet.delete(clickField.textContent);
+  } else {
+    clickField.classList.add("changedField");
+    selectSet.add(clickField.textContent);
+  }
+});
+
+document.addEventListener("click", function(event) {
+  const dropdown = document.getElementById("id_personal_list");
+  if (!dropdown.contains(event.target)) {
+    dropdown.blur(); // закрыть выпадающий список при клике вне его
+  }
+});
+
+   document.getElementById('creating_form').addEventListener('submit', function(event){
+    event.preventDefault();
+      const form = document.getElementById('submit-form'); // Находим элемент формы внутри контейнера
+      const formData = new FormData(form); // Создаем объект FormData из формы
+    
+      // Добавляем уникальные значения из selectSet в объект FormData
+      let index = 0;
+      for (let item of selectSet) {
+        formData.append('personal_list', item);
+        index++;
+      }
+    var error_list=document.getElementById('error-list');
+    var success_list = document.getElementById('success-list');
+    request = fetch("{%url 'post_creating'%}",
+    {
+      method: "POST",
+      body: formData
+    })
+    
+    .then(function(request){
+      console.log(request);
+      return request.json()
+    })
+    .then(function(data){
+      if(data.hasOwnProperty('error')){
+        error=new Error(data['error'])
+        throw error;
+        }
+      if(data.hasOwnProperty('success')){
+          success_list.innerHTML = '';
+          error_list.innerHTML = '';
+          var element = document.createElement('li');
+          element.textContent = "Successifuly created";
+          success_list.appendChild(element);
+        }
+    })
+    .catch(function(error){
+      console.log(error);
+      error_list.innerHTML = '';
+      success_list.innerText = '';
+      var element = document.createElement('li');
+      element.textContent = error
+      error_list.appendChild(element);
+    });
+    });
+</script>
+{% endblock JavaScript%}

@@ -61,7 +61,7 @@ document.getElementById('myform-signup').addEventListener('submit', function(eve
       localStorage.setItem('password', document.getElementById('id_password').value);
       localStorage.setItem('confirm_password', document.getElementById('id_confirm_password').value);
       var error = data.error+'\n';
-      var errorElement = document.createElement('li'); // Создаем новый элемент для каждой ошибки
+      var errorElement = document.createElement('li'); 
       errorElement.style="color: black; font-size: 15px";
       errorElement.textContent = error; 
       messagesContainer.appendChild(errorElement);
@@ -72,10 +72,10 @@ document.getElementById('myform-signup').addEventListener('submit', function(eve
     console.log(data);
     for (var i = 0; i < data.errors.__all__.length; i++) {
       var error = data.errors.__all__[i]+'\n';
-      var errorElement = document.createElement('li'); // Создаем новый элемент для каждой ошибки
+      var errorElement = document.createElement('li'); 
       errorElement.style="color: black; font-size: 15px";
-      errorElement.textContent = error; // Устанавливаем текст ошибки в элемент
-      messagesContainer.appendChild(errorElement); // Добавляем элемент с ошибкой в контейнер
+      errorElement.textContent = error; 
+      messagesContainer.appendChild(errorElement); 
     }
   }
      else if(data.hasOwnProperty('message')){
@@ -108,14 +108,14 @@ document.getElementById('myform-signin').addEventListener('submit', function(eve
   })
   .then(function(data) {
     var messagesContainer = document.querySelector('.logmessages');
-    messagesContainer.innerHTML = ''; // Очистка контейнера от предыдущих сообщений
+    messagesContainer.innerHTML = ''; 
     if (data.hasOwnProperty('error')) {
       messagesContainer.style.display="block";
       localStorage.setItem('login', loginElement.value);
       localStorage.setItem('logpassword', passwordElement.value);
       localStorage.setItem('remember', checkboxElement.value);
       var error = data.error+'\n';
-      var errorElement = document.createElement('li'); // оздаем новый элемент для каждой ошибки
+      var errorElement = document.createElement('li'); 
       errorElement.style="color: black; font-size: 15px";
       errorElement.textContent = error; 
       messagesContainer.appendChild(errorElement);
@@ -126,10 +126,10 @@ document.getElementById('myform-signin').addEventListener('submit', function(eve
       console.log(data);
       for (var i = 0; i < data.errors.__all__.length; i++) {
         var error = data.errors.__all__[i]+'\n';
-        var errorElement = document.createElement('li'); // Создаем новый элемент для каждой ошибки
+        var errorElement = document.createElement('li'); 
         errorElement.style="color: black; font-size: 15px";
-        errorElement.textContent = error; // Устанавливаем текст ошибки в элемент
-        messagesContainer.appendChild(errorElement); // Добавляем элемент с ошибкой в контейнер
+        errorElement.textContent = error;
+        messagesContainer.appendChild(errorElement); 
       }
     }
    
