@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="project-box-content-header">
-    <a href="{% url 'project_show' project.id user.id%}">  <p class="box-content-header">{{project.event}}</p></a>
+    <a href="{% url 'project_show' project.pk%}" style="text-decoration: none;">  <p class="box-content-header">{{project.event}}</p></a>
       <p class="box-content-subheader">{{project.name}}</p>
     </div>
     <div class="box-progress-wrapper">

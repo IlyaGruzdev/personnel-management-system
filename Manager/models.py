@@ -68,6 +68,8 @@ class CustomUser(AbstractUser):
 class PersonalList(models.Model):
   price = models.PositiveIntegerField(validators=[MinValueValidator(250), MaxValueValidator(100000)])
   category = models.CharField(max_length=100, choices = TYPES_OF_PERSONAL, default = TYPES_OF_PERSONAL[0])
+  def __str__(self):
+    return self.category
 
 class Project(models.Model):
   name = models.CharField(max_length=50)
@@ -85,11 +87,16 @@ class Project(models.Model):
   def days_left(self):
     delta_time = timezone.localdate() - self.start_date
     return delta_time.days
+  def __str__(self):
+    return self.name
+  def get_absolute_url(self):
+    return reverse("project_show", kwargs={"project_id": self.id})
 
 class Manager(models.Model):
   projects = models.ManyToManyField(Project, related_name='managers')
   user = models.OneToOneField(CustomUser, related_name='manager', on_delete=models.CASCADE, primary_key=True)
-
+  def __str__(self):
+    return self.user.username
 
 class Message(models.Model):
   message = models.TextField()

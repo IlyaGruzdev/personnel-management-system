@@ -66,10 +66,10 @@ def index(request):
 
     else:
         context={}
-        if('user' in request.session):
-            user = CustomUser.objects.get(username=request.session['user']) 
-        else:
-            user=None
+        try:
+            user = CustomUser.objects.get(username=request.session['user'])
+        except CustomUser.DoesNotExist:
+            user = None
         if user:
             user_url = user.get_absolute_url()
         else:
@@ -147,9 +147,9 @@ def getProject(request, project_id, user_id):
     else:
         return JsonResponse({'error': 'You are not in the current session'})
     
-def projectShow(request, project_id, user_id):
+def projectShow(request, project_id):
     project = get_object_or_404(Project, id=project_id)
-    user = get_object_or_404(CustomUser, id=user_id)
+    user = get_object_or_404(CustomUser, username=request.session['user'])
     managers = project.managers.all()
     personal = project.personal.all() 
     return render(request, 'manager/project.html', context={'project': project, 'managers': managers, 'personal': personal, 'user': user})

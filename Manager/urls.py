@@ -9,5 +9,5 @@ urlpatterns = [
   re_path(r'profile/(?P<username>[\w+ ./]+)/', views.profile, name='manager_profile'),
   path('post/creating/', views.postCreating, name='post_creating'),
   path('get/project/<int:project_id>/user/<int:user_id>/', views.getProject, name='get_project'),
-  path('progect/<int:project_id>/user/<int:user_id>', views.projectShow, name='project_show')
+  path('project/<int:project_id>/show/', views.projectShow, name='project_show')
 ]
