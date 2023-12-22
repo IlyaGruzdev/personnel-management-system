@@ -8,7 +8,7 @@ from django.contrib.auth import logout
 from django.core.exceptions import ValidationError
 from django.contrib import messages, sessions
 from django.db import transaction
-from datetime import datetime
+import json
 
 def index(request):
     print(request.POST)
@@ -90,7 +90,7 @@ def profile(request, username):
     projects = user.manager.projects.all()
     return render(request, 'manager/profile.html', context={'user': user, 'projectform': projectForm, 'user_url': user_url, 'projects': projects})
 
-def PostCreating(request):
+def postCreating(request):
     if(request.session):
         user = CustomUser.objects.get(username=request.session['user'])
         if request.method == 'POST':
@@ -109,7 +109,7 @@ def PostCreating(request):
                 for item in personal_list:
                     item = item.strip()
                     try:
-                        list_item =PersonalList(price = cleaned_data['duration']*personal_price[item], count=20, category = item)
+                        list_item =PersonalList(price = cleaned_data['duration']*personal_price[item], category = item)
                         personalArr.append(list_item)
                     except Exception as e:
                         return JsonResponse({'error': str(e)}, status=400)
@@ -127,4 +127,29 @@ def PostCreating(request):
                 return JsonResponse({'error': form.errors}, status=400)
     return JsonResponse({'success': 'successifuly created'})
 
-
+def getProject(request, project_id, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'})
+    
+    if ('user' in request.session and request.session['user'] == user.username):
+        try:
+            project = user.manager.projects.get(id=project_id)
+        except Project.DoesNotExist as e:
+            return JsonResponse({'error': str(e)})
+        serialized_project = json.dumps({
+            'name': project.name,
+            'event': project.event,
+            'id': project.id,
+        })
+        return JsonResponse({'project': serialized_project})
+    else:
+        return JsonResponse({'error': 'You are not in the current session'})
+    
+def projectShow(request, project_id, user_id):
+    project = get_object_or_404(Project, id=project_id)
+    user = get_object_or_404(CustomUser, id=user_id)
+    managers = project.managers.all()
+    personal = project.personal.all() 
+    return render(request, 'manager/project.html', context={'project': project, 'managers': managers, 'personal': personal, 'user': user})

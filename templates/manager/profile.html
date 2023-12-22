@@ -7,12 +7,12 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/manager/main.css'%}?v=2f74b6273bbf">
   <title>Document</title>
 </head>
-<body>
+<body style="top:0;left:0;right:0; position:relative;">
 <div class="" style="display: flex;flex-direction: column;width: 100%;">
-<div style="position:relative; left:0;right: 0;top:0;">
+<div>
 {% include 'components/navbar.html'%}
 </div>
-<div class="app-container">
+<div class="app-container" style="overflow: auto;">
   <div class="app-header">
     <div class="app-header-left">
       <span class="app-icon"></span>
@@ -44,8 +44,8 @@
           <path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
       </button>
       <button class="profile-btn">
-        <img src="https://assets.codepen.io/3306515/IMG_2025.jpg" />
-        <span>Aybüke C.</span>
+        <img src="{{user.avatar.url}}" />
+        <span>{{user.username}}</span>
       </button>
     </div>
     <button class="messages-btn">
@@ -428,8 +428,11 @@
 </div>
 </div>
 </div>
+
+
 </div>
 {% include 'components/projectCreatingForm.html'%}
+{% include 'components/project-personal.html'%}
 </body>
 
 <script src="{% static 'js/manager-profile.js'%}"></script>

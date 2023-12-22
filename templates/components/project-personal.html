@@ -1,0 +1,107 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/personal/project-personal.css'%}">
+<div class="personal-container" id="personal-container">
+  
+  <div class="user-container">
+    <header class="header">
+
+      <h4 class="title">Live Personal list 
+       
+      </h4>
+      <small class="subtitle">Search by name and/date</small>
+      <input type="text" name="filter" id="filter" placeholder="Search" />
+    </header>
+    <ul id="result" class="user-list">
+      <li><h3>Loading...</h3></li>      
+    </ul>
+    <img src="{% static 'img/close.png'%}" alt="Close" id="close-img">
+    <button type="submit" id="send-btn">Send</button> Add hew personal to project
+  </div>
+</div>
+{% block JavaScript%}
+<script>
+  let res = 50;
+ function showPersonalList(project_id, user_id)
+ {
+  fetch(`{% url 'get_project' 0 0 %}`.replace('0', project_id).replace('0', user_id), {
+    method: "GET"
+  })
+  .then(function(request)
+  {
+    return request.json()
+  })
+  .then(function(data)
+  {
+  if(data.hasOwnProperty('error')){
+        error=new Error(data['error'])
+        throw error;
+  }
+  var project=JSON.parse(data.project);
+  document.getElementById('personal-container').style.visibility='visible';
+  document.querySelector('.title').innerText=project.name+'\n'+ project.event;
+  return true;
+  })
+  .catch(function(error)
+  {
+    console.log(error);
+    document.querySelector('.title').innerText = error;
+    result.innerHTML = "";
+    document.getElementById('personal-container').style.visibility='visible';
+    document.getElementById('send-btn').setAttribute('disabled', '');
+    return false;
+  })
+
+ };
+document.addEventListener('DOMContentLoaded', function(e){
+  document.getElementById('close-img').addEventListener('click', function() {
+    document.getElementById('personal-container').style.visibility = "hidden";
+});
+});
+
+const result = document.getElementById("result");
+const filter = document.getElementById("filter");
+const listItems = [];
+
+const filterData = (searchTerm) => {
+  listItems.forEach((item) => {
+    if (item.innerText.toLowerCase().includes(searchTerm.toLowerCase())) {
+      item.classList.remove("hide");
+    } else {
+      item.classList.add("hide");
+    }
+  });
+};
+
+const getData = async () => {
+  const res = await fetch("{% url 'get_personal'%}?results=50");
+  const data = await res.json();
+  result.innerHTML = "";
+  for(user of data.data){
+    const li = document.createElement("li");
+    listItems.push(li);
+    li.innerHTML = `
+      <img
+            src="/media/${user.avatar}"
+            alt="${user.username}"
+          />
+      <div class="user-list-item">
+        <div class="user-info">
+              <h4>${user.username}</h4>
+              <p>${user.email}, ${user.date_joined}</p>
+        </div>
+        <div class="checkbox-container">
+          <input class="input" type="checkbox" id="checkbox${user.username}">
+          <label for="checkbox${user.username}" class="checkbox-label">ADD</label>
+        </div>
+      </div>
+      `;
+    result.appendChild(li);
+  };
+};
+
+getData();
+
+filter.addEventListener("input", (e) => filterData(e.target.value));
+
+</script>
+{% endblock JavaScript%}

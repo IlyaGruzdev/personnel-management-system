@@ -1,8 +1,4 @@
-body {
-  font: normal 18px/1.5 "Fira Sans", "Helvetica Neue", sans-serif;
-  background-color: #211f1f25;
- 
-}
+
 
 .form-container {
   width: 40%;
@@ -15,6 +11,8 @@ body {
   z-index: 100;
   border-radius: 15px;
   visibility: hidden;
+  
+  font-size: 18px;
 }
 
 .form-container * {

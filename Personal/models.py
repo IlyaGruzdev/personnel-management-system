@@ -5,3 +5,4 @@ class Personal(models.Model):
   raiting = models.SmallIntegerField(MaxValueValidator(100), default=60)
   projects = models.ManyToManyField(Project, related_name='personal')
   user = models.OneToOneField(CustomUser, related_name='personal', on_delete=models.CASCADE,primary_key=True)
+  

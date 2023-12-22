@@ -4,9 +4,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.urls import reverse
+from django.utils import timezone
 import os
-from datetime import datetime, timedelta
-import datetime
 
 # Create your models here.
 TYPES_OF_EVENTS = [
@@ -41,7 +40,7 @@ personal_types = ["Not changed", "nurses", "orderlies", "paramedics", "copying a
 TYPES_OF_PERSONAL = sorted([(item, item) for item in personal_types])
 
 def get_upload_path(instance, filename):
-    current_date = datetime.now().strftime("%Y-%m-%d")
+    current_date = timezone.now().strftime("%Y-%m-%d")
     return os.path.join("uploads", current_date, filename)
 
 class CustomUser(AbstractUser):
@@ -62,35 +61,43 @@ class CustomUser(AbstractUser):
         return reverse("personal_profile", kwargs={"username": self.username})
       elif self.is_manager:
         return reverse("manager_profile", kwargs={"username": self.username})
-  
+  def __str__(self):
+    return self.username
+ 
 
 class PersonalList(models.Model):
   price = models.PositiveIntegerField(validators=[MinValueValidator(250), MaxValueValidator(100000)])
   category = models.CharField(max_length=100, choices = TYPES_OF_PERSONAL, default = TYPES_OF_PERSONAL[0])
-  count = models.PositiveSmallIntegerField(validators = [MinValueValidator(1)])
-
 
 class Project(models.Model):
   name = models.CharField(max_length=50)
-  brief = models.TextField(verbose_name='Краткое описание')
+  brief = models.TextField(default="", verbose_name='Краткое описание')
   photo=models.ImageField(null=True, blank=True, upload_to=get_upload_path, default='no_avatar.jpg')
-  event = models.CharField(max_length=50, choices = TYPES_OF_EVENTS)
+  event = models.CharField(max_length=50, choices = TYPES_OF_EVENTS, default=TYPES_OF_EVENTS[0])
   public_date = models.DateField(auto_now_add=True)
-  start_date = models.DateField()
+  start_date = models.DateField(default=timezone.now)
   duration = models.PositiveSmallIntegerField(validators = [MinValueValidator(1), MaxValueValidator(10000)], default = 24)
   personal_list = models.ManyToManyField(PersonalList, related_name = "projects")
   def progress(self):
-    now = datetime.date.today()
+    now = timezone.localdate()
     delta_time = now - self.start_date
     return int((self.duration * 3600 - delta_time.total_seconds()) / (self.duration * 3600)) * 100
   def days_left(self):
-    delta_time = datetime.date.today() - self.start_date
+    delta_time = timezone.localdate() - self.start_date
     return delta_time.days
 
 class Manager(models.Model):
   projects = models.ManyToManyField(Project, related_name='managers')
   user = models.OneToOneField(CustomUser, related_name='manager', on_delete=models.CASCADE, primary_key=True)
 
+
+class Message(models.Model):
+  message = models.TextField()
+  public_date = models.DateTimeField(auto_now_add = True)
+  user = models.ForeignKey(CustomUser, related_name='messages', on_delete=models.DO_NOTHING)
+  project = models.ForeignKey(Project, null=True, blank = True, related_name='messages', on_delete=models.CASCADE)
+  def __str__(self):
+    return self.message
 
 
 

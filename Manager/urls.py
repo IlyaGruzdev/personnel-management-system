@@ -7,8 +7,7 @@ urlpatterns = [
   path("accounts/", include("django.contrib.auth.urls")),  
   path('logout/', views.log_out, name = 'logout'),
   re_path(r'profile/(?P<username>[\w+ ./]+)/', views.profile, name='manager_profile'),
-  path('post/creating/', views.PostCreating, name='post_creating')
+  path('post/creating/', views.postCreating, name='post_creating'),
+  path('get/project/<int:project_id>/user/<int:user_id>/', views.getProject, name='get_project'),
+  path('progect/<int:project_id>/user/<int:user_id>', views.projectShow, name='project_show')
 ]
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-document_root=settings.MEDIA_ROOT
