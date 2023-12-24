@@ -78,11 +78,15 @@ document.getElementById('myform-signup').addEventListener('submit', function(eve
       messagesContainer.appendChild(errorElement); 
     }
   }
-     else if(data.hasOwnProperty('message')){
+     else if(data.success){
       localStorage.removeItem('username');
       localStorage.removeItem('email');
       localStorage.removeItem('password');
-      localStorage.removeItem('confirm_password')
+      localStorage.removeItem('confirm_password') 
+      var result=document.getElementById('insert')
+      result.innerHTML = `<li ><a href="${data.user.url}/" class="nav-link" > <img src="${data.user.avatar}" class="nav-avatar"></a></li>
+      <li class="nav-link"><a href="${data.user.url}/">${data.user.username}</a></li> 
+      <li ><a href="#" onclick="showRegisterForm()"><span class="glyphicon glyphicon-user"></span> Log out</a></li>`;
       history.go();
     }
   })

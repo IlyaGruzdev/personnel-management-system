@@ -35,3 +35,11 @@ class ProjectAdmin(admin.ModelAdmin):
         ('Event info', {'fields': ['event', 'start_date', 'duration']}),
         ('Personal list', {'fields': ['personal_list']}),
     ]
+
+@admin.register(Message)
+class ProjectAdmin(admin.ModelAdmin):
+    exclude = None
+    list_display = ['message', 'public_date']
+    search_fields = ['message', 'public_date', 'project']
+    ordering = ['public_date']
+    list_filter = ['public_date', 'project'] 

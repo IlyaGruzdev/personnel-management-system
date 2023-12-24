@@ -23,16 +23,17 @@
     </ul>
     {%if user.get_absolute_url%}
     <ul class="nav navbar-nav navbar-right">
-      <li ><a href="{{user.get_absolute_url}}" class="nav-link"> <img src="{{user.avatar.url}}" class="nav-avatar"></a></li>
-      <li class="nav-link"><a href="{{user.get_absolute_url}}">{{user.username}}</a></li>
+      <li ><a href="{{user.get_absolute_url}}" class="nav-link" id="user-avatar"> <img src="{{user.avatar.url}}" class="nav-avatar"></a></li>
+      <li class="nav-link"><a href="{{user.get_absolute_url}}" id="user-name">{{user.username}}</a></li>
       <li ><a href="#" onclick="showRegisterForm()"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
       <li>
      <a href="{% url 'logout'%}"/><span class="glyphicon glyphicon-log-in"></span> Log out</a>
     </li>
     </ul>
     {%else%}
-    <ul class="nav navbar-nav navbar-right">
-    <li ><a href="#" onclick="showRegisterForm()"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+    <ul class="nav navbar-nav navbar-right" id="insert">
+    
+    <li ><a href="#" id="sign-up" onclick="showRegisterForm()"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
     </ul>
     {% endif %}
   </div>

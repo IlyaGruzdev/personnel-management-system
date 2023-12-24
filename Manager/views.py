@@ -22,10 +22,19 @@ def index(request):
                 if CustomUser.objects.filter(username=username).exists():
                     return JsonResponse({'error': 'username is already exist'}, status = 400)
                 else:
-                    CustomUser.objects.create(username=username, email=email, password=password)
+                    user=CustomUser.objects.create(username=username, email=email, password=password)
+                    user.is_personal=True
+                    user.save() 
                     request.session['user'] = username
-                    registerForm = RegisterForm()
-                    return JsonResponse({'message': 'data was saved'})
+                    response_data = {
+                     'success': True,
+                                'user': {
+                                    'avatar': user.avatar.url,  
+                                    'username': user.username,
+                                    'url': user.get_absolute_url()
+                                }
+                            }                 
+                    return JsonResponse(response_data)
             else:
                 print(registerForm.errors)
                 errors=dict(registerForm.errors)
@@ -66,10 +75,9 @@ def index(request):
 
     else:
         context={}
-        try:
+        user=None
+        if('user' in request.session):
             user = CustomUser.objects.get(username=request.session['user'])
-        except CustomUser.DoesNotExist:
-            user = None
         if user:
             user_url = user.get_absolute_url()
         else:
@@ -152,4 +160,4 @@ def projectShow(request, project_id):
     user = get_object_or_404(CustomUser, username=request.session['user'])
     managers = project.managers.all()
     personal = project.personal.all() 
-    return render(request, 'manager/project.html', context={'project': project, 'managers': managers, 'personal': personal, 'user': user})
+    return render(request, 'manager/project.html', context={'project': project,'user': user})

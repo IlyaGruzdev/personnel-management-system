@@ -10,15 +10,86 @@
       <img src="{{project.photo.url}}"/></figure>
   </div>
   <div class="messages">
-    <div class="messages-content"></div>
+    <div class="messages-content" id="id_messages_content"></div>
   </div>
   <div class="message-box">
-    <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
-    <button type="submit" class="message-submit">Send</button>
+    <textarea type="text" class="message-input" id="id_message_input" placeholder="Type message..."></textarea>
+    <button type="submit" class="message-submit" id="id_message_button">Send</button>
   </div>
 
 </div>
 <div class="bg"></div>
 </div>
 </div>
+
 <script src="{% static 'js/project.js'%}"></script>
+{% block JavaScript%}
+<script>
+  let requestUser = '{{user.username}}';
+  window.addEventListener('load', function() {
+    var messages = document.querySelector('.messages-content');
+    var d, m, i = 0;
+  
+    
+  }
+)
+const chatSocket = new WebSocket( "ws://"+ window.location.host + '/project/{{project.id}}');     
+        chatSocket.onopen = function (e) {
+        console.log("The connection was setup successfully !");
+      };
+      function scrollToBottom() {
+      messages.scrollTo(0, messages.scrollHeight);
+    }
+  
+    function setDate() {
+      d = new Date();
+      if (m !== d.getMinutes()) {
+        m = d.getMinutes();
+        var timestamp = document.createElement('div');
+        timestamp.className = 'timestamp';
+        timestamp.textContent = d.getHours() + ':' + m;
+        messages.appendChild(timestamp);
+      }
+    }
+      chatSocket.onclose = function (e) {
+        console.log("Something unexpected happened !");
+      };
+     
+      document.querySelector("#id_message_button").onkeyup = function (e) {
+        if (e.keyCode == 13) {
+          document.querySelector("#id_message_button").click();
+        }
+      };
+      document.querySelector("#id_message_button").onclick = function (e) {
+        var messageInput = document.querySelector(
+          "#id_message_input"
+        ).value;
+        chatSocket.send(JSON.stringify({'message': messageInput, 'username': requestUser}));
+      };
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        if(data.user.username==requestUser){
+        var newMessage = document.createElement('div');
+        newMessage.className = 'message message-personal new';
+        newMessage.textContent = data.message;
+        document.querySelector('.messages-content').appendChild(newMessage);
+        setDate();
+        document.querySelector('.message-input').value = '';
+        scrollToBottom();
+        }
+        else
+        {
+          var newMessage = document.createElement('div');
+          newMessage.className = 'message new';
+          newMessage.textContent = data.message;
+          newMessage.className = 'message new';
+      newMessage.innerHTML = `<figure class="avatar"><img src=${data.user.avatar}/></figure>` + data.message;
+      document.querySelector('.messages-content').classList.add('new');
+        document.querySelector('.messages-content').appendChild(newMessage);
+          setDate();
+          scrollToBottom();
+        }
+
+      };
+</script>
+{% endblock JavaScript%}
